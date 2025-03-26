@@ -10,8 +10,8 @@ class InjestTask(BaseModel):
     chunk_size:int = Field(strict=True, gt=0, default=1000)
     host:str = Annotated[str, StringConstraints(strip_whitespace=True, pattern=r'(https?:\/\/)[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi')]
     port:int = Field(frozen=True,ge=0)
-    user:str = Annotated[str, StringConstraints(strip_whitespace=True)]
-    password:str = Annotated[str, StringConstraints(strip_whitespace=True)]
+    user:str = Annotated[str, StringConstraints(strip_whitespace=True, min_length=None)]
+    password:str = Annotated[str, StringConstraints(strip_whitespace=True, min_length=None)]
     data_folder:DirectoryPath
     sleep_between_chunks:float = Field(strict=True, ge=0, default=0.3)
     

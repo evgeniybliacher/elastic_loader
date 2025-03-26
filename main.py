@@ -16,12 +16,17 @@ if __name__ == "__main__":
   # Required positional argument
   parser.add_argument('--task_path', type=str,
                     help='Full path to the task file. The file is required.')
+  # Optional positional argument
+  parser.add_argument('--username', type=str, nargs='?',
+                    help='An optional string positional argument for basic authentication. Default is None.')
+   
+  parser.add_argument('--password', type=str, nargs='?',
+                    help='An optional string positional argument for basic authentication. Default is None.') 
+
   args = parser.parse_args()
   logger.remove(0) # remove the default handler configuration
   logger.add(sys.stdout, level="DEBUG", serialize=False)
 
-  working_dir:str = './test_data'
-  injest_task_file_name:str = 'injest.task'
 
   pipeline_result = flow(
     validate_full_file_path(args.task_path),
@@ -30,12 +35,18 @@ if __name__ == "__main__":
   )
   match pipeline_result:
       case Success(data):
-          logger.info(f'Elasticsearch task data: {data}')
+          injest_task:InjestTask = pipeline_result.unwrap()
+          if args.username is not None:
+            injest_task.user = args.username
+          if args.password is not None:
+            injest_task.password = args.password
+          logger.info(f'Injest task: {injest_task}')
       case Failure(e):
           logger.critical(e)
           sys.exit(1)
-  injest_task:InjestTask = pipeline_result.unwrap()
-    
+  if (injest_task.user is None or injest_task.password is None):
+      logger.critical('Usernam e and password are required. You can define them as optional positional arguments or in the task file')
+      sys.exit(1)
   pipeline_result = flow(
     create_elastic_client(injest_task, logger.debug),
     bind(lambda x: injest_data(x, injest_task, generate_actions(injest_task.data_folder, injest_task.index).unwrap(), logger.debug))

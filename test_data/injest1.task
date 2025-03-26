@@ -1,0 +1,7 @@
+{
+  "index": "clinical_document_index_from_*",
+  "host": "https://mycu1-03-es1",
+  "port": 60035,
+  "chunk_size": 10,
+  "data_folder": "C:\\temp\\data"
+}
