@@ -1,0 +1,9 @@
+{
+  "index":"clinical_document_index_from_*",
+  "host": "https://mycu1-03-es1",
+  "port": 60035,
+  "user": "dbmElastic",
+  "password": "dD4B-yBwwoB1AI",
+  "chunk_size":10,
+  "data_folder": "C:\\temp\\data"
+}

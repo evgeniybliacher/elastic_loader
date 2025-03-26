@@ -1,0 +1,14 @@
+[project]
+name = "elastic-loader"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "argparse>=1.4.0",
+    "elasticsearch>=8.17.2",
+    "loguru>=0.7.3",
+    "pydantic>=2.10.6",
+    "returns>=0.25.0",
+    "tqdm>=4.67.1",
+]
